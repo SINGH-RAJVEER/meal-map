@@ -67,3 +67,14 @@ This project uses [Vitest](https://vitest.dev/) for testing. You can run the tes
 ```bash
 bun run test
 ```
+
+## Linting & Formatting
+
+Use Biome to lint and format the codebase:
+
+```bash
+bun run lint
+bun run lint:fix
+bun run format
+bun run check
+```

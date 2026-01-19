@@ -96,8 +96,8 @@
       rgba(255, 255, 255, 0.4),
       rgba(255, 255, 255, 0.1)
     );
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(50px) saturate(120%);
+    -webkit-backdrop-filter: blur(50px) saturate(120%);
     border: 1px solid rgba(255, 255, 255, 0.3);
     border-top: 1px solid rgba(255, 255, 255, 0.5);
     border-left: 1px solid rgba(255, 255, 255, 0.5);
@@ -107,11 +107,9 @@
   }
 
   .dark .glass {
-    background: linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.05),
-      rgba(255, 255, 255, 0.01)
-    );
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3));
+    backdrop-filter: blur(60px) saturate(120%);
+    -webkit-backdrop-filter: blur(60px) saturate(120%);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-top: 1px solid rgba(255, 255, 255, 0.2);
     border-left: 1px solid rgba(255, 255, 255, 0.2);
@@ -123,29 +121,31 @@
   .glass-card {
     background: linear-gradient(
       135deg,
-      rgba(255, 255, 255, 0.6),
-      rgba(255, 255, 255, 0.2)
+      rgba(255, 255, 255, 0.4),
+      rgba(255, 255, 255, 0.1)
     );
-    backdrop-filter: blur(40px);
-    -webkit-backdrop-filter: blur(40px);
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-top: 1px solid rgba(255, 255, 255, 0.8);
-    border-left: 1px solid rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(80px) saturate(120%);
+    -webkit-backdrop-filter: blur(80px) saturate(120%);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-top: 1px solid rgba(255, 255, 255, 0.6);
+    border-left: 1px solid rgba(255, 255, 255, 0.6);
     box-shadow:
       0 20px 40px -5px rgba(0, 0, 0, 0.1),
       0 10px 20px -5px rgba(0, 0, 0, 0.05),
-      inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+      inset 0 0 0 1px rgba(255, 255, 255, 0.2);
   }
 
   .dark .glass-card {
     background: linear-gradient(
       135deg,
-      rgba(255, 255, 255, 0.08),
-      rgba(255, 255, 255, 0.02)
+      rgba(0, 0, 0, 0.65),
+      rgba(0, 0, 0, 0.45)
     );
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-    border-left: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(100px) saturate(120%);
+    -webkit-backdrop-filter: blur(100px) saturate(120%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    border-left: 1px solid rgba(255, 255, 255, 0.3);
     box-shadow:
       0 20px 40px -5px rgba(0, 0, 0, 0.4),
       0 10px 20px -5px rgba(0, 0, 0, 0.3),
@@ -188,5 +188,25 @@
 
   .text-gradient {
     color: hsl(var(--foreground));
+  }
+
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  .transform-style-3d {
+    transform-style: preserve-3d;
+  }
+
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+
+  .rotate-x-180 {
+    transform: rotateX(180deg);
+  }
+
+  .rotate-x-360 {
+    transform: rotateX(360deg);
   }
 }

@@ -19,3 +19,14 @@ A modern meal tracking application built with TanStack Start, Tailwind CSS v4, s
 - **Authentication**: Better Auth
 - **Runtime**: Bun
 - **Router**: TanStack Router
+
+## Linting & Formatting
+
+Run Biome linting and formatting:
+
+```bash
+bun run lint
+bun run lint:fix
+bun run format
+bun run check
+```
