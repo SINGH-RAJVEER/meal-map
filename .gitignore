@@ -12,3 +12,8 @@ count.txt
 .vinxi
 todos.json
 .vercel
+
+# Nix
+result
+.direnv
+.postgres
