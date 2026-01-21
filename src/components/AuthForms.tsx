@@ -49,31 +49,24 @@ export function AuthForms() {
 
     try {
       if (isLogin) {
-        const response = await fetch(signIn.url, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password }),
+        await signIn({
+          data: {
+            email,
+            password,
+          },
         });
-
-        if (!response.ok) {
-          const error = await response.text();
-          throw new Error(error || "Failed to login");
-        }
       } else {
         if (password !== confirmPassword) {
           throw new Error("Passwords do not match");
         }
 
-        const response = await fetch(signUp.url, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password, name }),
+        await signUp({
+          data: {
+            email,
+            password,
+            name,
+          },
         });
-
-        if (!response.ok) {
-          const error = await response.text();
-          throw new Error(error || "Failed to regester");
-        }
       }
 
       // Force a reload to update session state

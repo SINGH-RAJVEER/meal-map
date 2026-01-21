@@ -10,6 +10,9 @@ const config = defineConfig({
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
+      "@tanstack/react-start/server": fileURLToPath(
+        new URL("./src/lib/react-start-server-shim.ts", import.meta.url),
+      ),
     },
   },
   plugins: [

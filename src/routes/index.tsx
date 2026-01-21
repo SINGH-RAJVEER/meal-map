@@ -3,6 +3,8 @@ import { getUser } from "../lib/session";
 import { Button } from "../components/ui/button";
 import { Plus } from "lucide-react";
 import { AuthForms } from "../components/AuthForms";
+import { MapBackground } from "../components/MapBackground";
+import { Droplets } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -54,7 +56,8 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen pt-24 pb-12">
+    <div className="min-h-screen pt-24 pb-12 relative isolate">
+      <MapBackground />
       <div className="container mx-auto px-4 max-w-2xl space-y-8">
         {/* Summary Section */}
         <section className="space-y-6">
@@ -114,6 +117,49 @@ function App() {
                   </div>
                 </div>
               ))}
+            </CardContent>
+          </Card>
+        </section>
+
+        {/* Water Intake Section */}
+        <section className="space-y-6">
+          <h2 className="text-2xl font-bold tracking-tight">Water Intake</h2>
+          <Card className="glass-card">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <div className="space-y-1">
+                <CardTitle className="text-xl font-bold flex items-center gap-2">
+                  <Droplets className="h-5 w-5" />
+                  Hydration
+                </CardTitle>
+                <p className="text-sm text-muted-foreground">
+                  2000ml / 3000ml goal
+                </p>
+              </div>
+              <Button
+                variant="outline"
+                size="icon"
+                className="rounded-full h-8 w-8 hover:bg-secondary"
+              >
+                <Plus className="h-4 w-4" />
+              </Button>
+            </CardHeader>
+            <CardContent className="pt-4">
+              <div className="flex gap-1 h-12">
+                {/* Create visual "glasses" or "blocks" for water */}
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <div
+                    key={i}
+                    className={`flex-1 rounded-sm border ${
+                      i < 5
+                        ? "bg-foreground/80 border-foreground/80"
+                        : "bg-transparent border-foreground/20"
+                    }`}
+                  />
+                ))}
+              </div>
+              <p className="text-xs text-muted-foreground mt-2 text-center">
+                5 of 8 glasses consumed
+              </p>
             </CardContent>
           </Card>
         </section>

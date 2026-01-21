@@ -1,5 +1,5 @@
 import { HeaderClient } from "./HeaderClient";
 
 export function Header() {
-  return <HeaderClient user={null} />;
+  return <HeaderClient user={undefined} />;
 }

@@ -44,16 +44,13 @@ function RegisterPage() {
     setIsLoading(true);
 
     try {
-      const response = await fetch(signUp.url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password, name }),
+      await signUp({
+        data: {
+          email,
+          password,
+          name,
+        },
       });
-
-      if (!response.ok) {
-        const error = await response.text();
-        throw new Error(error || "Failed to sign up");
-      }
 
       navigate({ to: "/" });
     } catch (err) {

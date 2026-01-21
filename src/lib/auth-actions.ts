@@ -19,17 +19,31 @@ export const signUp = createServerFn({ method: "POST" })
       throw new Error("Password must be at least 8 characters");
     }
 
-    const result = await auth.api.signUpEmail({
-      body: {
-        email,
-        password,
-        name,
-      },
-      asResponse: true,
-    });
+    let result: Response;
+    try {
+      result = await auth.api.signUpEmail({
+        body: {
+          email,
+          password,
+          name,
+        },
+        asResponse: true,
+      });
+    } catch {
+      throw new Error("Failed to create account");
+    }
 
     if (!result.ok) {
-      throw new Error("Failed to create account");
+      let details = "";
+      try {
+        details = await result.text();
+      } catch {
+        details = "";
+      }
+      const message = details?.trim()
+        ? `Failed to create account: ${details}`
+        : `Failed to create account (status ${result.status})`;
+      throw new Error(message);
     }
 
     // Set the session cookie
@@ -50,16 +64,30 @@ export const signIn = createServerFn({ method: "POST" })
       throw new Error("Email and password are required");
     }
 
-    const result = await auth.api.signInEmail({
-      body: {
-        email,
-        password,
-      },
-      asResponse: true,
-    });
+    let result: Response;
+    try {
+      result = await auth.api.signInEmail({
+        body: {
+          email,
+          password,
+        },
+        asResponse: true,
+      });
+    } catch {
+      throw new Error("Invalid email or password");
+    }
 
     if (!result.ok) {
-      throw new Error("Invalid email or password");
+      let details = "";
+      try {
+        details = await result.text();
+      } catch {
+        details = "";
+      }
+      const message = details?.trim()
+        ? `Invalid email or password: ${details}`
+        : `Invalid email or password (status ${result.status})`;
+      throw new Error(message);
     }
 
     // Set the session cookie
