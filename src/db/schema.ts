@@ -88,3 +88,15 @@ export const foodItems = pgTable("food_items", {
   fats: integer("fats").default(0),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
+
+export const dailyStats = pgTable("daily_stats", {
+  id: serial("id").primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id),
+  date: date("date").notNull(),
+  waterIntake: integer("water_intake").default(0).notNull(), // in cups
+  targetCalories: integer("target_calories").default(2000).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});

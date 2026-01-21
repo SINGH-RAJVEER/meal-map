@@ -5,5 +5,7 @@ import * as schema from "./schema";
 const connectionString =
   process.env.DATABASE_URL || "postgresql://localhost:5432/meal_map";
 
-const client = postgres(connectionString);
+const client = postgres(connectionString, {
+  ssl: "require"
+});
 export const db = drizzle(client, { schema });
