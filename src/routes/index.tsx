@@ -50,7 +50,6 @@ function App() {
   if (!user) {
     return (
       <div className="min-h-screen pt-20 flex flex-col items-center justify-center p-4">
-        <FoodGridBackground />
         <AuthForms />
       </div>
     );
