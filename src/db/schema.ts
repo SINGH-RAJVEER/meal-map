@@ -7,6 +7,7 @@ import {
   date,
   boolean,
 } from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
 
 // Better Auth schema tables
 export const user = pgTable("user", {
@@ -100,3 +101,31 @@ export const dailyStats = pgTable("daily_stats", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
+
+// Drizzle Relations
+export const userRelations = relations(user, ({ many }) => ({
+  meals: many(meals),
+  dailyStats: many(dailyStats),
+}));
+
+export const mealsRelations = relations(meals, ({ one, many }) => ({
+  user: one(user, {
+    fields: [meals.userId],
+    references: [user.id],
+  }),
+  foodItems: many(foodItems),
+}));
+
+export const foodItemsRelations = relations(foodItems, ({ one }) => ({
+  meal: one(meals, {
+    fields: [foodItems.mealId],
+    references: [meals.id],
+  }),
+}));
+
+export const dailyStatsRelations = relations(dailyStats, ({ one }) => ({
+  user: one(user, {
+    fields: [dailyStats.userId],
+    references: [user.id],
+  }),
+}));

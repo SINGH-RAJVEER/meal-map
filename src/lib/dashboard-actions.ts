@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { db } from "../db";
 import { dailyStats, meals, foodItems } from "../db/schema";
-import { and, eq, sql, gte } from "drizzle-orm";
+import { and, eq, gte } from "drizzle-orm";
 import { getUser } from "./session";
 
 // Helper to get today's date string YYYY-MM-DD
@@ -42,56 +42,44 @@ export const getDashboardMetrics = createServerFn({ method: "GET" }).handler(
     const stats = todayStats[0];
 
     // 2. Get Meals for Today to calc calories
-    // Assuming 'meals.date' is stored as string 'YYYY-MM-DD' based on schema `date: date("date")`
-    const todaysMeals = await db
-      .select({
-        id: meals.id,
-        calories: sql<number>`sum(${foodItems.calories})`.mapWith(Number),
-      })
-      .from(meals)
-      .leftJoin(foodItems, eq(meals.id, foodItems.mealId))
-      .where(and(eq(meals.userId, user.id), eq(meals.date, today)))
-      .groupBy(meals.id);
+    const todaysMeals = await db.query.meals.findMany({
+      where: and(eq(meals.userId, user.id), eq(meals.date, today)),
+      with: {
+        foodItems: true,
+      },
+    });
 
-    const consumedCalories = todaysMeals.reduce(
-      (acc, m) => acc + (m.calories || 0),
-      0,
-    );
+    const consumedCalories = todaysMeals.reduce((acc, meal) => {
+      const mealCalories = meal.foodItems.reduce(
+        (sum, item) => sum + item.calories,
+        0,
+      );
+      return acc + mealCalories;
+    }, 0);
 
     // 3. Get Weekly Average
-    // Simple math: sum of last 7 days calories / 7
-    // This requires a more complex query or multiple daily checks.
-    // For now, let's keep it simple or mock it if queries get too complex for quick iteration.
-    // Let's try to query meals from last 7 days.
     const sevenDaysAgo = new Date();
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
     const sevenDaysStr = sevenDaysAgo.toISOString().split("T")[0];
 
-    // We need sum of calories per day.
-    const weeklyMeals = await db
-      .select({
-        date: meals.date,
-        calories: sql<number>`sum(${foodItems.calories})`.mapWith(Number),
-      })
-      .from(meals)
-      .leftJoin(foodItems, eq(meals.id, foodItems.mealId))
-      .where(and(eq(meals.userId, user.id), gte(meals.date, sevenDaysStr)))
-      .groupBy(meals.date);
+    const weeklyMeals = await db.query.meals.findMany({
+      where: and(eq(meals.userId, user.id), gte(meals.date, sevenDaysStr)),
+      with: {
+        foodItems: true,
+      },
+    });
 
-    const weeklyTotal = weeklyMeals.reduce(
-      (acc, m) => acc + (m.calories || 0),
-      0,
-    );
+    const weeklyTotal = weeklyMeals.reduce((acc, meal) => {
+      const mealCalories = meal.foodItems.reduce(
+        (sum, item) => sum + item.calories,
+        0,
+      );
+      return acc + mealCalories;
+    }, 0);
     const weeklyAvg = Math.round(weeklyTotal / 7);
 
     // 4. Meals Logged (This week)
-    const mealsLoggedCount = weeklyMeals.length; // Actually this query groups by date.
-    // We want total number of meal entries.
-    const weeklyMealsCountRes = await db
-      .select({ count: sql<number>`count(*)` })
-      .from(meals)
-      .where(and(eq(meals.userId, user.id), gte(meals.date, sevenDaysStr)));
-    const mealsLogged = Number(weeklyMealsCountRes[0]?.count || 0);
+    const mealsLogged = weeklyMeals.length;
 
     // 5. Recent Meals list
     const recentMealsList = await db.query.meals.findMany({

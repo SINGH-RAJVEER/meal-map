@@ -60,6 +60,16 @@ export function AuthForms() {
           throw new Error("Passwords do not match");
         }
 
+        const hasUppercase = /[A-Z]/.test(password);
+        const hasLowercase = /[a-z]/.test(password);
+        const hasNumber = /\d/.test(password);
+
+        if (!hasUppercase || !hasLowercase || !hasNumber) {
+          throw new Error(
+            "Password must include an uppercase letter, a lowercase letter, and a number",
+          );
+        }
+
         await signUp({
           data: {
             email,
