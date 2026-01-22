@@ -3,7 +3,7 @@ import { getUser } from "../lib/session";
 import { Button } from "../components/ui/button";
 import { Plus } from "lucide-react";
 import { AuthForms } from "../components/AuthForms";
-import { MapBackground } from "../components/MapBackground";
+import { FoodGridBackground } from "../components/FoodGridBackground";
 import { Droplets } from "lucide-react";
 import {
   Card,
@@ -50,6 +50,7 @@ function App() {
   if (!user) {
     return (
       <div className="min-h-screen pt-20 flex flex-col items-center justify-center p-4">
+        <FoodGridBackground />
         <AuthForms />
       </div>
     );
@@ -57,7 +58,7 @@ function App() {
 
   return (
     <div className="min-h-screen pt-24 pb-12 relative isolate">
-      <MapBackground />
+      <FoodGridBackground />
       <div className="container mx-auto px-4 max-w-2xl space-y-8">
         {/* Summary Section */}
         <section className="space-y-6">
