@@ -1,0 +1,25 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: calorie_tracker
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/calorie_tracker
+      BETTER_AUTH_URL: http://localhost:3000
+      BETTER_AUTH_SECRET: change-me
+    ports:
+      - "3000:3000"
+
+volumes:
+  db_data:

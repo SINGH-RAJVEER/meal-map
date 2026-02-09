@@ -16,16 +16,9 @@
       {
         devShells.default = pkgs.mkShell {
           buildInputs = with pkgs; [
-            # JavaScript runtime and package managers
             bun
-            
-            # Database
             postgresql_17
-            
-            # Development tools
             git
-            
-            # SSL certificates (needed for some npm packages)
             openssl
           ];
 
