@@ -1,0 +1,48 @@
+services:
+  app:
+    build:
+      context: ../../
+      dockerfile: docker/dev/Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      # Mount source code for hot reload
+      - ../../:/app
+      # Prevent host node_modules from overriding the container's
+      - /app/node_modules
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/calorie_tracker
+      - BETTER_AUTH_URL=http://localhost:3000
+      - BETTER_AUTH_SECRET=${BETTER_AUTH_SECRET:?BETTER_AUTH_SECRET must be set in docker/dev/.env}
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - meal-map-dev
+
+  db:
+    image: postgres:17-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-calorie_tracker}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d calorie_tracker"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - meal-map-dev
+
+volumes:
+  postgres_data:
+
+networks:
+  meal-map-dev:
+    driver: bridge
