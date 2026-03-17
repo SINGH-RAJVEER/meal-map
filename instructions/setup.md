@@ -80,6 +80,10 @@ docker compose -f docker/dev/compose.yml up --build
 
 The app is available at `http://localhost:3000` with hot reload enabled.
 
+Notes:
+- `DATABASE_URL` defaults to `postgresql://postgres:postgres@db:5432/calorie_tracker` inside Docker. Override it when you need the app container to target a different database.
+- `CHOKIDAR_USEPOLLING=true` is enabled so file watching works reliably with bind mounts for hot reload.
+
 ## Linting & Formatting
 
 Use Biome to lint and format the codebase:
