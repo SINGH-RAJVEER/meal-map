@@ -68,6 +68,18 @@ This project uses [Vitest](https://vitest.dev/) for testing. You can run the tes
 bun run test
 ```
 
+## Docker Development
+
+Development Docker configuration is located in `docker/dev`.
+
+Start the app and a local PostgreSQL instance with:
+
+```bash
+docker compose -f docker/dev/compose.yml up --build
+```
+
+The app is available at `http://localhost:3000` with hot reload enabled.
+
 ## Linting & Formatting
 
 Use Biome to lint and format the codebase:
