@@ -30,3 +30,11 @@ bun run lint:fix
 bun run format
 bun run check
 ```
+
+## Docker (Development)
+
+Use the development container setup in `docker/dev`:
+
+```bash
+docker compose -f docker/dev/compose.yml up --build
+```
